@@ -1,0 +1,28 @@
+# Nom du workflow, visible dans l'interface GitHub Actions.
+name: Super-Linter
+
+# Déclencheur du workflow : ici, il s'exécute sur chaque push dans le dépôt.
+on: push
+
+# Définition des travaux (jobs) à exécuter dans le workflow.
+jobs:
+  # Nom du job, utilisé en interne pour identifier ce travail.
+  super-lint:
+    # Nom lisible pour le travail, affiché dans l'interface.
+    name: Lint code base
+    # Spécifie l'environnement d'exécution du job, ici une machine virtuelle Ubuntu.
+    runs-on: ubuntu-latest
+    # Liste des étapes à exécuter dans ce travail.
+    steps:
+      # Première étape : vérifier le code du dépôt.
+      - name: Checkout code # Nom de l'étape, visible dans l'interface.
+        uses: actions/checkout@v2 # Utilisation de l'action officielle pour extraire le code.
+
+      # Deuxième étape : exécuter le linter Super-Linter.
+      - name: Run Super-Linter # Nom de l'étape.
+        uses: github/super-linter@v4 # Utilisation de l'action Super-Linter à la version 4.
+        env: # Variables d'environnement nécessaires pour Super-Linter.
+          # Définit la branche principale par défaut pour Super-Linter.
+          DEFAULT_BRANCH: main
+          # Utilisation du token GitHub pour authentifier les actions.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
